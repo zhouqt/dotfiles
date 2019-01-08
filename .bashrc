@@ -1,108 +1,207 @@
+#!/bin/bash
+# vim:fdm=marker
+
+# Check if this is a non-login shells {{{
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
 # If not running interactively, don't do anything
-[ -z "$PS1" ] && return
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+# }}}
 
-# don't put duplicate lines in the history. See bash(1) for more options
-#export HISTCONTROL=ignoredups
+
+# Define variants {{{
+unset PROMPT_COMMAND
+
+# don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
+HISTCONTROL=ignoredups
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=10000
+HISTFILESIZE=20000
+EDITOR='vim'
+EDITOR=vim
+VISUAL=vim
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
+# If set, the pattern "**" used in a pathname expansion context will
+# match all files and zero or more directories and subdirectories.
+#shopt -s globstar
+
 # make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(lesspipe)"
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "$debian_chroot" -a -r /etc/debian_chroot ]; then
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
+# }}}
+
+# Prompt {{{
 
 # set a fancy prompt (non-color, unless we know we "want" color)
-#case "$TERM" in
-#xterm-color)
-    #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-    #;;
-#*)
-    #PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-    #;;
-#esac
+case "$TERM" in
+    xterm-color|*-256color) color_prompt=yes;;
+    xterm-kitty) color_prompt=yes;;
+esac
 
-# Comment in the above and uncomment this below for a color prompt
-PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+# force_color_prompt=yes
 
-# Dynamic xterm title as user@host:dir
-if [[ -z $SSH_CONNECTION ]]; then
-    case "$TERM" in
-        xterm*|rxvt*)
-        PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD}\007"'
-        ;;
-        screen)
-        PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD}\007"'
-        ;;
-    esac
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+    else
+	color_prompt=
+    fi
 fi
 
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-#if [ -f ~/.bash_aliases ]; then
-#    . ~/.bash_aliases
-#fi
-
-# completion
-if [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
+if [ "$color_prompt" = yes ]; then
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
+unset color_prompt force_color_prompt
 
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
+# }}}
+
+# Key binding {{{
+bind '"": history-search-backward'
+bind '"": history-search-forward'
+# }}}
+
+# Alias definitions {{{
 # enable color support of ls and also add handy aliases
-if [ "$TERM" != "dumb" ]; then
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     [[ -f $HOME/.lscolor256 ]] && eval $(dircolors -b $HOME/.lscolor256) || eval $(dircolors -b)
     alias ls='ls --color=auto'
     #alias dir='ls --color=auto --format=vertical'
     #alias vdir='ls --color=auto --format=long'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
 fi
 
-# some more ls aliases
-alias ll='ls -l'
-#alias la='ls -A'
-#alias l='ls -CF'
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
 
-bind '"": history-search-backward'
-bind '"": history-search-forward'
+alias df='df -Th'
+alias du='du -h'
+#show directories size
+alias dud='du -s *'
+#date for Many countries
+alias adate='for i in GMT US/Eastern Australia/Brisbane Asia/Shanghai UK/London Europe/Paris; do printf %-22s "$i:";TZ=$i date +"%m-%d %a %H:%M";done'
+alias info='info --vi-keys'
+alias rsync='rsync --progress --partial'
 
-# enable programmable completion features (you don't need to enable
+alias aria2c='aria2c --summary-interval=0'
+
+# For specific distros
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    # Linux {{{
+    alias dmesg='dmesg -H'
+    alias autoremove='sudo apt-get autoremove --purge && sudo apt-get clean && dpkg -l |grep ^rc |awk "{print \$2}" |sudo xargs -r dpkg -P'
+    # Add an "alert" alias for long running commands.  Use like so:
+    #   sleep 10; alert
+    #alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+    alias maas-sysid="maas admin nodes read | jq '.[] | {hostname:.hostname, system_id: .system_id, status:.status}' --compact-output"
+    #}}}
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    # Mac OSX {{{
+    #alias ls='ls -G'
+    alias brew='ALL_PROXY=127.0.0.1:12345 brew'
+    #alias vim='/usr/local/bin/vim'
+    #alias vimdiff='/usr/local/bin/vimdiff'
+    alias ssh='TERM=xterm-color /usr/local/bin/zssh -z ^@'
+    #}}}
+fi
+# }}}
+
+# enable programmable completion features {{{
+# (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
-if [ -f /etc/bash_completion ]; then
-   . /etc/bash_completion
+if ! shopt -oq posix; then
+    if [ -f /usr/share/bash-completion/bash_completion ]; then
+        . /usr/share/bash-completion/bash_completion
+    elif [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
+    fi
+    if [ -f $HOME/bin/git-completion.bash ]; then
+        . $HOME/bin/git-completion.bash
+    fi
 fi
+# }}}
+
+# Bash git prompt {{{
+# https://github.com/magicmonty/bash-git-prompt
+if [ -f "/usr/local/opt/bash-git-prompt/share/gitprompt.sh" ]; then
+    __GIT_PROMPT_DIR="/usr/local/opt/bash-git-prompt/share"
+    GIT_PROMPT_ONLY_IN_REPO=1
+    # GIT_PROMPT_FETCH_REMOTE_STATUS=0   # uncomment to avoid fetching remote status
+    # GIT_PROMPT_IGNORE_SUBMODULES=1 # uncomment to avoid searching for changed files in submodules
+    # GIT_PROMPT_WITH_VIRTUAL_ENV=0 # uncomment to avoid setting virtual environment infos for node/python/conda environments
+
+    # GIT_PROMPT_SHOW_UPSTREAM=1 # uncomment to show upstream tracking branch
+    # GIT_PROMPT_SHOW_UNTRACKED_FILES=normal # can be no, normal or all; determines counting of untracked files
+
+    # GIT_PROMPT_SHOW_CHANGED_FILES_COUNT=0 # uncomment to avoid printing the number of changed files
+
+    # GIT_PROMPT_STATUS_COMMAND=gitstatus_pre-1.7.10.sh # uncomment to support Git older than 1.7.10
+
+    # GIT_PROMPT_START=...    # uncomment for custom prompt start sequence
+    # GIT_PROMPT_END=...      # uncomment for custom prompt end sequence
+
+    # as last entry source the gitprompt script
+    # GIT_PROMPT_THEME=Custom # use custom theme specified in file GIT_PROMPT_THEME_FILE (default ~/.git-prompt-colors.sh)
+    GIT_PROMPT_THEME=Solarized_Ubuntu
+    # GIT_PROMPT_THEME_FILE=~/.git-prompt-colors.sh
+    # GIT_PROMPT_THEME=Solarized # use theme optimized for solarized color scheme
+    source "/usr/local/opt/bash-git-prompt/share/gitprompt.sh"
+fi
+# }}}
+
+# Path {{{
+# brew install coreutils
+if [ -f "/usr/local/opt/coreutils/libexec/" ]; then
+    export PATH="/usr/local/opt/coreutils/libexec/gnubin:${PATH:+:${PATH}}"
+    export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:${MANPATH:+:${MANPATH}}"
+fi
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+export PATH="/usr/local/sbin${PATH:+:${PATH}}"
+export PATH="$HOME/bin${PATH:+:${PATH}}"
+# }}}
+
 
 # This line was appended by KDE
 # Make sure our customised gtkrc file is loaded.
 export GTK2_RC_FILES=$HOME/.gtkrc-2.0
 
-#change the prompt line
-#if [ "$TERM" = "linux" ]
-#then
-#we're on the system console or maybe telnetting in
-#export PS1="\[\e[32;1m\]\u@\H:\[\e[36;1m\]\w\[\e[33;1m\]$ \[\e[0m\]"
-#else
-#we're not on the console, assume an xterm
-#export PS1="\[\e]2;\u@\H \w\a\[\e[32;1m\]\u@\H:\[\e[36;1m\]\w\[\e[33;1m\]$ \[\e[0m\]"
-#fi
-
-export PATH=$PATH:$HOME/bin
-
-# add Intel Compiler environment variables
-#source /opt/intel/fc/9.1.036/bin/ifortvars.sh
-#source $HOME/.context_env /home/roylez/soft/ConTeXt/tex
-export EDITOR=vim
-export VISUAL=vim
-
-
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+export LC_ALL=en_US.UTF-8
