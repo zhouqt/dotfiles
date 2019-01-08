@@ -1,23 +1,37 @@
 [user]
-    name = roylez
-    email = me@roylez.info
+    name = Tom Zhou
+    email = zhouqt@gmail.com
+[core]
+    editor = vim
+    excludesfile = ~/.gitignore
 [color]  # Ensure we get color
-    ui = always
+    #ui = always
+    branch      = auto
+    diff        = auto
+    grep        = auto
+    interactive = auto
+    status      = auto
 [push]
     default = current
     followTags = true
 [alias]
     a   = add
+    ai = add -i
     b   = branch
     c   = commit
     co  = checkout
+    cp = cherry-pick
     d   = diff
+    dt  = difftool -M
+    dtc = difftool -M --cached
     des = describe --tags
     l   = log
     lc  = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset %Cblue%cn%Creset' --abbrev-commit --date=relative
     la  = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset %Cblue%cn%Creset' --abbrev-commit --date=relative --all
     m   = merge
+    mt  = mergetool
     pl  = pull
+    plm = pull --no-ff
     pu  = push
     s   = status -sb
     t   = tag
@@ -25,14 +39,29 @@
     merge-branch-file = checkout --merge
     rb  = rebase
     undo = reset HEAD --hard
+    up = remote update --prune
+    ur = pull --rebase
+    ut = rm -r --cached
+    w  = show
+    wc = whatchanged -1
+
+    bisect-fixed   = bisect bad
+    bisect-unfixed = bisect good
+[diff]
+    tool = vimdiff
 [merge]
     tool = vimdiff
 [github]
-    user = roylez
-[core]
-    pager = cat
-    excludesfile = ~/.gitignore
+    user = zhouqt
 [branch]
     ;autosetuprebase = remote
 [status]
     submoduleSummary = true
+[sendemail]
+    confirm = always
+    suppresscc = self
+    thread = true
+    chainreplyto = false
+    bcc = zhouqt@gmail.com
+    smtpserver = /usr/bin/msmtp
+    smtpserveroption = "--account=gmail"

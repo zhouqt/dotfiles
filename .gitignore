@@ -1,6 +1,15 @@
-.mutt
+# pgp
+.gnupg/*
+!.gnupg/gpg.conf
+!.gnupg/gpg-agent.conf
+
 .irssi
 .lftp
+.mutt
+.mutt/alias
+.mutt/passwd
+.mutt/cache/header
+.ssh/id*
 .tags
 .gitignore
 *
