@@ -123,6 +123,16 @@ alias rsync='rsync --progress --partial'
 
 alias aria2c='aria2c --summary-interval=0'
 
+# Enable syntax-highlighting in less.
+# brew install highlight
+# apt-get install highlight
+if [ -f /usr/local/bin/highlight ] || [ -f /usr/bin/highlight ]; then
+    export LESSOPEN="| $(which highlight) %s --out-format xterm256 --quiet --force --style edit-vim-dark"
+    export LESS=" -R "
+    alias less='less -m -N -g -i -J --underline-special --SILENT'
+    alias more='more -LF'
+fi
+
 # For specific distros
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
     # Linux {{{
