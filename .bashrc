@@ -166,8 +166,14 @@ if ! shopt -oq posix; then
     elif [ -f /etc/bash_completion ]; then
         . /etc/bash_completion
     fi
-    if [ -f $HOME/bin/git-completion.bash ]; then
-        . $HOME/bin/git-completion.bash
+
+    # Git completion
+    if [ -f /usr/local/share/zsh/site-functions/git-completion.bash ]; then
+        # MacOS
+        . /usr/local/share/zsh/site-functions/git-completion.bash
+    elif [ -f /usr/share/bash-completion/completions/git ]; then
+        # Linux
+        . /usr/share/bash-completion/completions/git
     fi
 fi
 # }}}
