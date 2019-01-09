@@ -116,9 +116,9 @@ map Q gq
 
 " In many terminal emulators the mouse works just fine.  By enabling it you
 " can position the cursor, Visually select and scroll with the mouse.
-if has('mouse')
-  set mouse=a
-endif
+"if has('mouse')
+"  set mouse=a
+"endif
 
 " Switch syntax highlighting on when the terminal has colors or when using the
 " GUI (which always has colors).
