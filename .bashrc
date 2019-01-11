@@ -94,11 +94,26 @@ bind '"": history-search-backward'
 bind '"": history-search-forward'
 # }}}
 
+
+# Path {{{
+# brew install coreutils
+COREUTTILS_DIR="/usr/local/opt/coreutils/libexec/"
+if [ -d $COREUTTILS_DIR ]; then
+    export PATH="$COREUTTILS_DIR/gnubin:${PATH:+:${PATH}}"
+    export MANPATH="$COREUTTILS_DIR/gnuman:${MANPATH:+:${MANPATH}}"
+fi
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+export PATH="/usr/local/sbin${PATH:+:${PATH}}"
+export PATH="$HOME/bin${PATH:+:${PATH}}"
+# }}}
+
+
 # Alias definitions {{{
 # enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    [[ -f $HOME/.lscolor256 ]] && eval $(dircolors -b $HOME/.lscolor256) || eval $(dircolors -b)
+DIRCOLORS=`which dircolors`
+if [ x"$DIRCOLORS" != x"" ]; then
+    test -r ~/.dircolors && eval "$($DIRCOLORS -b ~/.dircolors)" || eval "$($DIRCOLORS -b)"
+    [[ -f $HOME/.lscolor256 ]] && eval $($DIRCOLORS -b $HOME/.lscolor256) || eval $($DIRCOLORS -b)
     alias ls='ls --color=auto'
     #alias dir='ls --color=auto --format=vertical'
     #alias vdir='ls --color=auto --format=long'
@@ -204,17 +219,6 @@ if [ -f "/usr/local/opt/bash-git-prompt/share/gitprompt.sh" ]; then
     # GIT_PROMPT_THEME=Solarized # use theme optimized for solarized color scheme
     source "/usr/local/opt/bash-git-prompt/share/gitprompt.sh"
 fi
-# }}}
-
-# Path {{{
-# brew install coreutils
-if [ -f "/usr/local/opt/coreutils/libexec/" ]; then
-    export PATH="/usr/local/opt/coreutils/libexec/gnubin:${PATH:+:${PATH}}"
-    export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:${MANPATH:+:${MANPATH}}"
-fi
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-export PATH="/usr/local/sbin${PATH:+:${PATH}}"
-export PATH="$HOME/bin${PATH:+:${PATH}}"
 # }}}
 
 
