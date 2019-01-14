@@ -73,9 +73,16 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    [[ -f $HOME/.bash_promptcolor ]] && source $HOME/.bash_promptcolor || BASH_PROMPT_COLOR=2
+    PS_CHROOT="${debian_chroot:+($debian_chroot)}"
+    PS_TIME="[$(tput setaf 4)\t$(tput sgr0)] "
+    PS_USER="$(tput bold)$(tput setaf $BASH_PROMPT_COLOR)\u$(tput sgr0)"
+    PS_HOST="$(tput bold)$(tput setaf $BASH_PROMPT_COLOR)\h$(tput sgr0)"
+    PS_DIR="$(tput bold)$(tput setaf 4)\w$(tput sgr0)"
+    PS1="$PS_TIME$PS_CHROOT$PS_USER@$PS_HOST:$PS_DIR\$ "
+    unset PS_TIME PS_CHROOT PS_USER PS_HOST PS_DIR
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    PS1='[\t] ${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 unset color_prompt force_color_prompt
 
