@@ -135,6 +135,7 @@ alias dud='du -s *'
 alias adate='for i in GMT US/Eastern Australia/Brisbane Asia/Shanghai UK/London Europe/Paris; do printf %-22s "$i:";TZ=$i date +"%m-%d %a %H:%M";done'
 alias info='info --vi-keys'
 alias rsync='rsync --progress --partial'
+alias grep='grep -n --exclude-dir="__pycache__"'
 
 alias aria2c='aria2c --summary-interval=0'
 
