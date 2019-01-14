@@ -191,6 +191,11 @@ if ! shopt -oq posix; then
         # Linux
         . /usr/share/bash-completion/completions/git
     fi
+
+    KUBECTL=`which kubectl`
+    if [ x"$KUBECTL" != x"" ]; then
+        source <($KUBECTL completion bash)
+    fi
 fi
 # }}}
 
