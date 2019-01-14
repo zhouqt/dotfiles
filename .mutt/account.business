@@ -1,19 +1,38 @@
 # vim: ft=muttrc
-set folder    = "~/.canonical"
+## 设置mutt邮件头的缓存文件，可以为一个目录，也可以是一个独立的文件，针对Maildir方式有效
+set header_cache = "~/Mail/Canonical/.header_cache/"
+set message_cachedir = "~/Mail/Canonical/.cache"
+set folder    = "~/Mail/Canonical"
 set mbox      = "+inbox"
-set record    = "+sent"
+#set mbox_type = maildir
+##发出的邮件保存到那个信箱文件，比如可以每个月发出的信件放在不同的文件里
+# set record = "~/Mail/=sent-mail-`date +%Y-%m`"
+set record    = ""
 set postponed = "+inbox"
 set trash     = "+trash"
-set spoolfile = "~/.canonical/inbox"
-set from      = 'Roy Zuo <roy.zuo@canonical.com>'
+set spoolfile = "~/Mail/Canonical/inbox"
+set from      = 'xx_fullname_x <xx_username_x@canonical.com>'
 # this option requires mutt 1.7+, otherwise
 # macro index,pager d "<save-message>=trash<enter>" "Trash"
 
+#设置邮件发送程序
 set sendmail  = "~/.mutt/do_sendmail msmtp -a canonical"
 
+## 设置签名
+#set signature = "~/Mail/signature.sh |"
 set signature = ~/.mutt/canonical_sign
-set status_format="===[ 公司 | @canonical.com | %f ]---[ 邮件:%?M?%M/?%m%?n? 新:%n?%?o? 旧:%o?%?d? 删除:%d?%?F? 星:%F?%?t? 标记:%t?%?p?? ]----%>-(%P %l)==="
+set status_format="-%r-Canonical: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---"
+
+# 地址簿
+source ~/.mutt/addressbook.business
+#当你在 index 里按 "a" 为来信者取别名时，使用哪一个别名文件保存这个别名。
+set alias_file=~/.mutt/addressbook.business
 
 macro index,pager y "<save-message>=all<enter>" "Archive"
 
 color status    black magenta
+
+# Set send hook
+send-hook   .      'my_hdr Bcc: xx_username_x@canonical.com'
+# send-hook   '~t "(xx_username_x@canonical.com|xx_username_x@gmail.com)"'  'unmy_hdr Bcc: xx_username_x@canonical.com'
+#send-hook . "set signature='fortune -e ubuntu-server-tips -s|'"
