@@ -228,6 +228,20 @@ fi
 # }}}
 
 
+# SSH agent {{{
+if [ x"$SSH_CLIENT" == x"" ]; then
+    if [ x"$SSH_AUTH_SOCK" == x"" ] || [ ! -S "$SSH_AUTH_SOCK" ]; then
+        if [ ! -S ~/.ssh/ssh_auth_sock ]; then
+            eval `ssh-agent`
+            ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
+        fi
+        export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
+    fi
+    ssh-add -l > /dev/null || ssh-add
+fi
+# }}}
+
+
 # This line was appended by KDE
 # Make sure our customised gtkrc file is loaded.
 export GTK2_RC_FILES=$HOME/.gtkrc-2.0
