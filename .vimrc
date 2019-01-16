@@ -68,11 +68,11 @@ endif
 set formatoptions+=mM     " default tcq, mM to help wrap chinese
 
 set backup
-if !isdirectory($HOME . "/.backup")
-    call mkdir($HOME . "/.backup", "p")
+if !isdirectory($HOME . "/.vim/backup")
+    call mkdir($HOME . "/.vim/backup", "p")
 endif
-set backupdir=$HOME/.backup
-set directory=$HOME/.backup     "swp
+set backupdir=$HOME/.vim/backup
+set directory=$HOME/.vim/backup     "swp
 
 " A hack so that vim does not break docker bind-mount
 "https://github.com/moby/moby/issues/15793
