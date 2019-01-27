@@ -3,7 +3,8 @@
 " curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 "
 
-call plug#begin( g:vim_home . "/plugged")
+"call plug#begin( g:vim_home . "/plugged")
+call plug#begin("~/.vim/plugged")
 "===================Plug loading starts========================================
 
 "-------------------------------------------------------------------------------
@@ -129,12 +130,12 @@ Plug 'Konfekt/FastFold'         " fix for vim's slow fdm=syntax
 Plug 'wellle/tmux-complete.vim'
 if has("nvim")
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-elseif version > 800
+elseif version < 800
+  Plug 'Shougo/neocomplete.vim'
+else
   Plug 'Shougo/deoplete.nvim'
   Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
-else
-  Plug 'Shougo/neocomplete.vim'
 endif
 let g:deoplete#enable_at_startup              = 1
 let g:deoplete#omni#min_pattern_length        = 3
@@ -158,7 +159,7 @@ let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 let g:UltiSnipsSnippetDirectories=["snips", "UltiSnips"]
-let g:UltiSnipsSnippetsDir= g:vim_home . '/snips'
+let g:UltiSnipsSnippetsDir= '~/.vim/snips'
 let g:UltiSnipsEditSplit= 'vertical'
 " }}} Plug 'SirVer/ultisnips' "
 
@@ -275,8 +276,11 @@ if $TERM =~ '^\(xterm\|screen\|tmux\)' || $TERM =~ '256color$' || has("gui_runni
     set t_8f=[38;2;%lu;%lu;%lum
     set t_8b=[48;2;%lu;%lu;%lum
     colorscheme gruvbox
-    " colorscheme Tomorrow-Night-Eighties
-    " colorscheme SpacegrayEighties
+    if !has('gui_running')
+        set termguicolors
+        highlight! NonText ctermbg=NONE guibg=NONE
+        highlight! Normal ctermbg=NONE guibg=NONE
+    endif
 else
-    colorscheme tango
+    colorscheme elflord
 endif
