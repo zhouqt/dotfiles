@@ -161,7 +161,7 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     # Linux {{{
     alias dmesg='dmesg -H'
     alias autoremove='sudo apt-get autoremove --purge && sudo apt-get clean && dpkg -l |grep ^rc |awk "{print \$2}" |sudo xargs -r dpkg -P'
-    alias upgrade='sudo apt-get update && sudo apt-get upgrade && autoremove'
+    alias upgrade='sudo apt-get update && sudo apt-get dist-upgrade && autoremove'
     # Add an "alert" alias for long running commands.  Use like so:
     #   sleep 10; alert
     #alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
