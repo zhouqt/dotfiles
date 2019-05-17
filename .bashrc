@@ -173,7 +173,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     alias brew='ALL_PROXY=127.0.0.1:12345 brew'
     #alias vim='/usr/local/bin/vim'
     #alias vimdiff='/usr/local/bin/vimdiff'
-    alias ssh='TERM=xterm-color /usr/local/bin/zssh -z ^@'
+    alias ssh='TERM=xterm-color ssh'
     alias upgrade='brew update && brew upgrade && brew cask upgrade && brew cleanup'
     #}}}
 fi
