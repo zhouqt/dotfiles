@@ -50,7 +50,7 @@ let g:airline_theme='dark'
 " }}}
 
 " theme
-Plug 'morhetz/gruvbox'
+Plug 'lifepillar/vim-gruvbox8'
 
 " dim inactive window
 Plug 'blueyed/vim-diminactive'
@@ -111,8 +111,6 @@ if has("nvim") || version > 800
 endif
 
 " }}}
-
-Plug 'Konfekt/FastFold'         " fix for vim's slow fdm=syntax
 
 " Plug deoplete {{{
 " Note: deoplete needs neovim-python ver.0.3.0+.
@@ -221,8 +219,6 @@ autocmd FileType graphql set fdm=syntax
 " prevent vim from slowing down when editing vue
 " let g:vue_disable_pre_processors=1
 
-Plug 'amadeus/vim-mjml', { 'for': 'mjml' }
-
 Plug 'ledger/vim-ledger', { 'for' : 'ledger' }
 autocmd FileType ledger set fdm=indent foldlevel=0 shiftwidth=4
 autocmd FileType ledger nnoremap j jzz
@@ -248,7 +244,7 @@ if $TERM =~ '^\(xterm\|screen\|tmux\)' || $TERM =~ '256color$' || has("gui_runni
     endif
     set t_8f=[38;2;%lu;%lu;%lum
     set t_8b=[48;2;%lu;%lu;%lum
-    colorscheme gruvbox
+    colorscheme gruvbox8
     if !has('gui_running')
         set termguicolors
         highlight! NonText ctermbg=NONE guibg=NONE

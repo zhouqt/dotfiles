@@ -60,12 +60,7 @@ set textwidth=80	" wrap text for 78 letters
 
 set magic
 
-if executable( 'par' )
-    set formatprg=par\ req
-else
-    set formatprg=fmt
-endif
-set formatoptions+=mM     " default tcq, mM to help wrap chinese
+set formatprg=fmt formatoptions+=mM     " default tcq, mM to help wrap chinese
 
 set backup
 if !isdirectory($HOME . "/.vim/backup")
