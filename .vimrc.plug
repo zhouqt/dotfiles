@@ -127,29 +127,35 @@ endif
 Plug 'Konfekt/FastFold'         " fix for vim's slow fdm=syntax
 
 " Plug deoplete {{{
+" Note: deoplete needs neovim-python ver.0.3.0+.
+" pip3 install --user --upgrade pynvim
 Plug 'wellle/tmux-complete.vim'
 if has("nvim")
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 elseif version < 800
   Plug 'Shougo/neocomplete.vim'
-else
+  let g:neocomplete#enable_at_startup           = 1
+  let g:neocomplete#enable_smart_case           = 1
+  let g:neocomplete#sources#omni#input_patterns = {}
+  let g:neocomplete#data_directory              = '~/.vim/.cache/neocomplete'
+  let g:neocomplete#enable_auto_delimiter       = 1
+elseif has("python3")
+  if filereadable("/usr/local/bin/python3")
+    let g:python3_host_prog = "/usr/local/bin/python3"
+  elseif filereadable("/usr/local/bin/python3")
+    let g:python3_host_prog = "/usr/bin/python3"
+  endif
   Plug 'Shougo/deoplete.nvim'
   Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
-let g:deoplete#enable_at_startup              = 1
+let g:deoplete#enable_at_startup              = 0
 let g:deoplete#omni#min_pattern_length        = 3
 let g:deoplete#omni#input_patterns            = {}
 let g:deoplete#omni#input_patterns.ruby       = ['[^. *\t]\.\w*', '[a-zA-Z_]\w*::']
 let g:deoplete#omni#input_patterns.ledger     = '^\s\+\(\S \S\|\S\|:\)\+'
-let g:deoplete                                = '~/.config/nvim/.cache/deoplete'
 let g:deoplete#enable_auto_delimiter          = 1
-let g:neocomplete#enable_at_startup           = 1
-let g:neocomplete#enable_smart_case           = 1
-let g:deoplete#omni#min_pattern_length        = 2
-let g:neocomplete#sources#omni#input_patterns = {}
-let g:neocomplete#data_directory              = '~/.vim/.cache/neocomplete'
-let g:neocomplete#enable_auto_delimiter       = 1
+autocmd InsertEnter * call deoplete#enable()
 autocmd FileType eruby let b:deoplete_disable_auto_complete=1
 " }}}
 
