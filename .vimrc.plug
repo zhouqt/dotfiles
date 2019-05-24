@@ -41,19 +41,6 @@ let g:NERDTreePatternMatchHighlightFullName = 1
 
 Plug 'vim-airline/vim-airline' " {{{
 set noshowmode
-let g:airline_mode_map = {
-    \ '__' : '-',
-    \ 'n'  : 'N',
-    \ 'i'  : 'INSERT',
-    \ 'R'  : 'REPLACE',
-    \ 'c'  : 'C',
-    \ 'v'  : 'V',
-    \ 'V'  : 'VL',
-    \ '' : 'VB',
-    \ 's'  : 'S',
-    \ 'S'  : 'S',
-    \ '' : 'S',
-    \ }
 let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
 let g:airline_section_x='%{&filetype}'
 let g:airline_section_z='%l,%c%V %3p%%'
