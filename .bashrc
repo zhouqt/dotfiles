@@ -145,6 +145,7 @@ alias rsync='rsync --progress --partial'
 alias grep='grep -n --exclude-dir="__pycache__"'
 
 alias aria2c='aria2c --summary-interval=0'
+alias ssh-fingerprint='ssh-keygen -E md5 -lf'
 
 # Enable syntax-highlighting in less.
 # brew install highlight
