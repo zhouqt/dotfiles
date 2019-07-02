@@ -68,20 +68,20 @@ endif
 set formatprg=fmt formatoptions+=mM     " default tcq, mM to help wrap chinese
 
 set backup
-if !isdirectory($HOME . "/.vim/backup")
-    call mkdir($HOME . "/.vim/backup", "p")
+if !isdirectory($HOME . "/.vimtmp/backup")
+    call mkdir($HOME . "/.vimtmp/backup", "p")
 endif
-set backupdir=$HOME/.vim/backup
-set directory=$HOME/.vim/backup     "swp
+set backupdir=$HOME/.vimtmp/backup
+set directory=$HOME/.vimtmp/backup     "swp
 
 " A hack so that vim does not break docker bind-mount
 "https://github.com/moby/moby/issues/15793
 set backupcopy=yes
 
-if !isdirectory($HOME . "/.vim/undo")
-    call mkdir($HOME . "/.vim/undo", "p")
+if !isdirectory($HOME . "/.vimtmp/undo")
+    call mkdir($HOME . "/.vimtmp/undo", "p")
 endif
-set undodir=~/.vim/undo undofile undolevels=1000 undoreload=1000
+set undodir=~/.vimtmp/undo undofile undolevels=1000 undoreload=1000
 
 set commentstring=#%s       " default comment style
 set sps=best,10             " only show 10 best spell suggestions
@@ -280,6 +280,10 @@ augroup END
 " }}}
 
 " {{{ restore views
+if !isdirectory($HOME . "/.vimtmp/view")
+    call mkdir($HOME . "/.vimtmp/view", "p")
+endif
+set viewdir=$HOME/.vimtmp/view
 set viewoptions=cursor,folds,slash,unix
 augroup vimrc
     autocmd BufWritePost *
