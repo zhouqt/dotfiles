@@ -20,9 +20,9 @@
     ai = add -i
     b   = branch
     c   = commit
+    d   = diff --color-words
     co  = checkout
     cp = cherry-pick
-    d   = diff
     dt  = difftool -M
     dtc = difftool -M --cached
     des = describe --tags
