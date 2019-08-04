@@ -181,7 +181,7 @@ nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
 " Plug fzf {{{
 " Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
-Plug '~/.zplug/repos/junegunn/fzf'
+" Plug '~/.zplug/repos/junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 
 function! s:find_git_root()
