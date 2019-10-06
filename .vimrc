@@ -1,4 +1,5 @@
 " Copied from the default vimrc file, 2017 Jun 13 version.
+" Description: nvim runtime configure file
 " vim: ft=vim foldmethod=marker
 
 " Use Vim settings, rather than Vi settings (much better!).
@@ -8,19 +9,37 @@ if &compatible
   set nocompatible
 endif
 
+"---------------------vim/neovim only stuff------------------------------
+if has('nvim')
+    " support for cursor shapes
+    let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+else
+    " Allow backspacing over everything in insert mode.
+    set backspace=indent,eol,start
+    "set encoding=utf-8
+    "set encoding=cp936
+    " keep record of editing information for cursor restore and more
+    set viminfo='10,\"100,:20,%,n~/.viminfo
+endif
+" use the same vim_home dir for vim and nvim, use the following in
+" ~/.config/nvim/init.vim
+"
+"       set runtimepath^=~/.vim runtimepath+=~/.vim/after
+"       let &packpath = &runtimepath
+"       source ~/.vimrc
+"
+let g:vim_home=$HOME.'/.vim'
+let g:vim_tmpdir=$HOME.'/.vimtmp'
+if !isdirectory( g:vim_tmpdir )
+    call mkdir(g:vim_tmpdir, "p")
+endif
+"------------------------------------------------------------------------
+
 " When the +eval feature is missing, the set command above will be skipped.
 " Use a trick to reset compatible only when the +eval feature is missing.
 silent! while 0
   set nocompatible
 silent! endwhile
-
-" Allow backspacing over everything in insert mode.
-set backspace=indent,eol,start
-
-"set encoding=cp936
-set fileencodings=utf-8,gbk,gb2312,gb18030,ucs-bom,latin1
-"set fileencoding=utf-8          " character encoding for file of the buffer
-
 
 set history=200		" keep 200 lines of command line history
 set ruler		" show the cursor position all the time
@@ -239,7 +258,7 @@ autocmd FileType mail
 
 "markdown
 autocmd BufNewFile,BufRead *mkd,*.md,*.mdown set ft=markdown
-autocmd FileType markdown set comments=n:> nu nospell textwidth=0 formatoptions=tcroqn2
+autocmd FileType markdown set comments=n:> nospell textwidth=0 formatoptions=tcroqn2
 
 "remind
 autocmd BufNewFile,BufRead *.rem set ft=remind
