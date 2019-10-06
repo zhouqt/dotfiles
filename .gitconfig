@@ -54,8 +54,6 @@
     bisect-unfixed = bisect good
 [diff]
     tool = vimdiff
-[merge]
-    tool = vimdiff
 [branch]
     ;autosetuprebase = remote
 [status]
@@ -68,3 +66,13 @@
     bcc = zhouqt@gmail.com
     smtpserver = /usr/bin/msmtp
     smtpserveroption = "--account=gmail"
+[merge]
+  tool = vimdiff
+[mergetool]
+  prompt = true
+[mergetool "vimdiff"]
+  cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+[difftool]
+  prompt = false
+[diff]
+  tool = vimdiff
