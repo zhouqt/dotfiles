@@ -74,8 +74,8 @@ set scrolloff=5
 set smartindent autoindent
 " replace <tab> with 2 blank space.
 set expandtab smarttab shiftwidth=4 softtabstop=4 tabstop=4
-set textwidth=80	" wrap text for 78 letters
-" set relativenumber
+set textwidth=100	" wrap text for 100 letters
+set relativenumber number
 
 set magic
 
