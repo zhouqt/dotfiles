@@ -280,3 +280,7 @@ if $TERM =~ '^\(xterm\|screen\|tmux\)' || $TERM =~ '256color$' || has("gui_runni
 else
     colorscheme elflord
 endif
+
+if $TERM =~ '^\(xterm-kitty\)'
+    let &t_ut=''
+endif
