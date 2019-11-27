@@ -147,23 +147,6 @@ alias grep='grep -n --exclude-dir="__pycache__"'
 alias aria2c='aria2c --summary-interval=0'
 alias ssh-fingerprint='ssh-keygen -E md5 -lf'
 
-# Enable syntax-highlighting in less.
-# brew install highlight
-# apt-get install highlight
-if [ -f /usr/local/bin/highlight ] || [ -f /usr/bin/highlight ]; then
-    export LESS_TERMCAP_so=$'\e[03;38;5;202m'
-    export LESS_TERMCAP_se=$'\e[0m'
-    export LESS_TERMCAP_mb=$'\e[01;31m'
-    export LESS_TERMCAP_md=$'\e[01;38;5;180m'
-    export LESS_TERMCAP_me=$'\e[0m'
-    export LESS_TERMCAP_ue=$'\e[0m'
-    export LESS_TERMCAP_us=$'\e[04;38;5;139m'
-    export LESSOPEN="| $(which highlight) %s --out-format xterm256 --quiet --force --style edit-vim-dark"
-    export LESS=" -R "
-    alias less='less -m -N -g -i -J --underline-special --SILENT'
-    alias more='more -LF'
-fi
-
 # For specific distros
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
     # Linux {{{
@@ -186,6 +169,28 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     #}}}
 fi
 # }}}
+
+# Include internal used alias
+if [ -r ".bash_alias_company" ]; then
+    source ~/.bash_alias_company
+fi
+
+# Enable syntax-highlighting in less.
+# brew install highlight
+# apt-get install highlight
+if [ -f /usr/local/bin/highlight ] || [ -f /usr/bin/highlight ]; then
+    export LESS_TERMCAP_so=$'\e[03;38;5;202m'
+    export LESS_TERMCAP_se=$'\e[0m'
+    export LESS_TERMCAP_mb=$'\e[01;31m'
+    export LESS_TERMCAP_md=$'\e[01;38;5;180m'
+    export LESS_TERMCAP_me=$'\e[0m'
+    export LESS_TERMCAP_ue=$'\e[0m'
+    export LESS_TERMCAP_us=$'\e[04;38;5;139m'
+    export LESSOPEN="| $(which highlight) %s --out-format xterm256 --quiet --force --style edit-vim-dark"
+    export LESS=" -R "
+    alias less='less -m -N -g -i -J --underline-special --SILENT'
+    alias more='more -LF'
+fi
 
 # enable programmable completion features {{{
 # (you don't need to enable
